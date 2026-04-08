@@ -1,0 +1,5 @@
+{
+  "name": "Visionary AI",
+  "description": "Real-time object detection using TensorFlow.js and COCO-SSD. Detects 80+ object classes directly in your browser.",
+  "requestFramePermissions": ["camera"]
+}
