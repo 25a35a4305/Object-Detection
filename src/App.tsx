@@ -318,6 +318,13 @@ export default function App() {
                   <option value="laptop">Laptop</option>
                   <option value="mouse">Mouse</option>
                   <option value="keyboard">Keyboard</option>
+                  <option value="book">Book</option>
+                  <option value="scissors">Scissors</option>
+                  <option value="backpack">Backpack</option>
+                  <option value="umbrella">Umbrella</option>
+                  <option value="handbag">Handbag</option>
+                  <option value="tie">Tie</option>
+                  <option value="suitcase">Suitcase</option>
                   <option value="car">Car</option>
                   <option value="bicycle">Bicycle (Bike)</option>
                   <option value="motorcycle">Motorcycle</option>
