@@ -15,7 +15,6 @@ interface AppState {
   isModelLoading: boolean;
   isCameraActive: boolean;
   error: string | null;
-  fps: number;
   detections: Detection[];
 }
 
@@ -30,13 +29,10 @@ export default function App() {
     isModelLoading: true,
     isCameraActive: false,
     error: null,
-    fps: 0,
     detections: [],
   });
 
   const [targetObject, setTargetObject] = useState<string>('person');
-  const [autoSnapshot, setAutoSnapshot] = useState(false);
-  const [lastSnapshotTime, setLastSnapshotTime] = useState(0);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
 
   // --- Initialization ---
@@ -108,12 +104,6 @@ export default function App() {
       return;
     }
 
-    // Calculate FPS
-    const delta = time - lastTimeRef.current;
-    if (delta > 0) {
-      const currentFps = Math.round(1000 / delta);
-      setState(prev => ({ ...prev, fps: currentFps }));
-    }
     lastTimeRef.current = time;
 
     // Run Detection
@@ -143,20 +133,11 @@ export default function App() {
         ctx.fillStyle = '#000000';
         ctx.font = 'bold 14px JetBrains Mono';
         ctx.fillText(label, x + 5, y - 7);
-
-        // Auto Snapshot Logic
-        if (autoSnapshot && prediction.class === targetObject && prediction.score > 0.7) {
-          const now = Date.now();
-          if (now - lastSnapshotTime > 5000) { // Throttle snapshots to every 5s
-            takeSnapshot();
-            setLastSnapshotTime(now);
-          }
-        }
       });
     }
 
     requestRef.current = requestAnimationFrame(detectFrame);
-  }, [targetObject, autoSnapshot, lastSnapshotTime]);
+  }, [targetObject]);
 
   useEffect(() => {
     if (state.isCameraActive && !state.isModelLoading) {
@@ -213,9 +194,6 @@ export default function App() {
             <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">
               Stream: {state.isCameraActive ? 'Active' : 'Offline'}
             </span>
-          </div>
-          <div className="px-3 py-1 bg-[#1a1b1e] rounded border border-[#2a2b2e]">
-            <span className="text-[10px] font-mono text-emerald-500">{state.fps} FPS</span>
           </div>
         </div>
       </header>
@@ -354,19 +332,6 @@ export default function App() {
                     Back Cam
                   </button>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between p-4 bg-[#0f1012] rounded-lg border border-[#2a2b2e]">
-                <div>
-                  <h4 className="text-sm font-medium">Auto-Snapshot</h4>
-                  <p className="text-[10px] text-gray-500 font-mono">Capture on target detection</p>
-                </div>
-                <button 
-                  onClick={() => setAutoSnapshot(!autoSnapshot)}
-                  className={`w-12 h-6 rounded-full transition-colors relative ${autoSnapshot ? 'bg-emerald-600' : 'bg-[#2a2b2e]'}`}
-                >
-                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${autoSnapshot ? 'left-7' : 'left-1'}`} />
-                </button>
               </div>
             </div>
           </div>
