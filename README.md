@@ -25,7 +25,7 @@ object-detection/
 │── requirements.txt
 │── README.md
 ## 🚀 Installation
-git clone https://github.com/your-username/object-detection.git
+git clone https://github.com/25a35a4305/Object-Detection.git
 cd object-detection
 pip install -r requirements.txt
 ## ▶️ Usage
